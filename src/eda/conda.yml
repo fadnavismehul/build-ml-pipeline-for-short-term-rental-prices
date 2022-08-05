@@ -10,4 +10,5 @@ dependencies:
   - pandas-profiling=2.11.0
   - pyarrow=2.0
   - pip:
-      - wandb==0.10.31
+      - wandb==0.12.17
+      - ipywidgets
