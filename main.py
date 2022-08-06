@@ -16,7 +16,7 @@ _steps = [
     # NOTE: We do not include this in the steps so it is not run by mistake.
     # You first need to promote a model export to "prod" before you can run this,
     # then you need to run this step explicitly
-#    "test_regression_model"
+   "test_regression_model"
 ]
 
 
@@ -84,6 +84,7 @@ def go(config: DictConfig):
             _ = mlflow.run(
                 f"{config['main']['components_repository']}/train_val_test_split",
                 "main",
+                version="main",
                 parameters={
                     "input" : "clean_data.csv:latest",
                     "test_size" : config['modeling']['test_size'] ,
@@ -121,6 +122,7 @@ def go(config: DictConfig):
             _ = mlflow.run(
                 f"{config['main']['components_repository']}/test_regression_model",
                 "main",
+                version="main",
                 parameters={
                     "mlflow_model" : "random_forest_export:prod",
                     "test_dataset" : "test_data.csv:latest"
