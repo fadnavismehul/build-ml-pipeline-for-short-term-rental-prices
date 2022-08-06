@@ -7,6 +7,7 @@ import logging
 import os
 
 import wandb
+print(wandb.__path__)
 
 from wandb_utils.log_artifact import log_artifact
 
@@ -21,13 +22,27 @@ def go(args):
 
     logger.info(f"Returning sample {args.sample}")
     logger.info(f"Uploading {args.artifact_name} to Weights & Biases")
-    log_artifact(
-        args.artifact_name,
-        args.artifact_type,
-        args.artifact_description,
-        os.path.join("data", args.sample),
-        run,
+
+    artifact = wandb.Artifact(
+        name=args.artifact_name,
+        type=args.artifact_type,
+        description=args.artifact_description
     )
+
+    artifact.add_file(os.path.join("data", args.sample))
+
+    run.log_artifact(artifact)
+    artifact.wait()
+
+
+
+    # log_artifact(
+    #     args.artifact_name,
+    #     args.artifact_type,
+    #     args.artifact_description,
+    #     os.path.join("data", args.sample),
+    #     run,
+    # )
 
 
 if __name__ == "__main__":
